@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bavaria.com.gr/sitemap.xml
