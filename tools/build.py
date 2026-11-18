@@ -52,13 +52,13 @@ DAYS = ["Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Πα�
 SCHEMA_DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 # Opening hours as published on each store's Google Business Profile (Oct 2026)
 LOCATIONS = [
-    {"key": "pantanassis", "tag": "Κατάστημα", "name": "Κατάστημα Παντανάσσης", "store": True,
+    {"key": "pantanassis", "tag": "Κατάστημα", "name": "Κατάστημα Παντανάσσης", "store": True, "geo": (38.2441129, 21.7352453),
      "street": "Παντανάσσης 79", "city": "Πάτρα", "zip": "26221", "phone": "+30 2610 220982",
      "hours": [[("08:45", "14:00")], [("08:45", "14:00"), ("17:30", "21:00")], [("08:45", "14:00")],
                [("08:45", "14:00"), ("17:30", "21:00")], [("08:45", "14:00"), ("17:30", "21:00")], [("08:45", "14:00")], []],
      "maps": "https://maps.google.com/?cid=13694090949006186721",
      "embed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12534.102638873219!2d21.717220855419924!3d38.24411290000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x135e49ddd0ef44cf%3A0xbe0b2f29e967d8e1!2zQkFWQVJJQSDOl86bzpnOkc6azp_OmSDOmM6VzqHOnM6fzqPOmc6mzqnOnc6VzqM!5e0!3m2!1sel!2sgr!4v1721805584480!5m2!1sel!2sgr"},
-    {"key": "neo", "tag": "Κατάστημα", "name": "Κατάστημα Ν.Ε.Ο. Πατρών–Αθηνών", "store": True,
+    {"key": "neo", "tag": "Κατάστημα", "name": "Κατάστημα Ν.Ε.Ο. Πατρών–Αθηνών", "store": True, "geo": (38.2691396, 21.756194),
      "street": "Ν.Ε.Ο. Πατρών–Αθηνών 86", "city": "Πάτρα", "zip": "26443", "phone": "+30 6944 318691",
      "hours": [[("09:30", "13:30")], [("09:30", "13:30"), ("17:30", "21:00")], [("09:30", "13:30")],
                [("09:30", "13:30"), ("17:30", "21:00")], [("09:30", "13:30"), ("17:30", "21:00")], [("10:00", "14:00")], []],
@@ -244,6 +244,7 @@ def footer():
         <ul>
           <li><a href="/eggyisi/">Εγγύηση {c["warranty_system_years"]} ετών</a></li>
           <li><a href="/eggyisi/#service">Service</a></li>
+          <li><a href="/epidotisi-iliakou-thermosifona/">Επιδότηση ηλιακού</a></li>
           <li><a href="/syxnes-erotiseis/">Συχνές ερωτήσεις</a></li>
           <li><a href="/etaireia/">Η εταιρεία</a></li>
         </ul>
@@ -285,7 +286,9 @@ def org_schema():
     places = [{
         "@type": "HomeAndConstructionBusiness", "@id": url(f"/#{l['key']}"),
         "name": f"BAVARIA Ηλιακοί Θερμοσίφωνες — {l['name']}", "image": url("/assets/img/og-bavaria.jpg"),
-        "telephone": l["phone"].replace(" ", ""), "email": c["email"], "url": url("/epikoinonia/"), "hasMap": l["maps"],
+        "telephone": l["phone"].replace(" ", ""), "email": c["email"], "url": url("/epikoinonia/"), "hasMap": l["maps"], "sameAs": [l["maps"]],
+        "geo": {"@type": "GeoCoordinates", "latitude": l["geo"][0], "longitude": l["geo"][1]},
+        "areaServed": [{"@type": "City", "name": "Πάτρα"}, {"@type": "AdministrativeArea", "name": "Αχαΐα"}],
         "priceRange": "€€", "openingHoursSpecification": hours_schema(l),
         "parentOrganization": {"@id": url("/#organization")},
         "address": {"@type": "PostalAddress", "streetAddress": l["street"], "addressLocality": l["city"],
@@ -445,6 +448,10 @@ def faq_items():
          "<p>Κάθε μοντέλο συνοδεύεται από Δήλωση Συμμόρφωσης CE (EN ISO 9806:2017) και ενεργειακή σήμανση κατά τον Κανονισμό (ΕΕ) 812/2013.</p>" + km),
         ("Μπορώ να τον βάλω σε κεραμοσκεπή;",
          "<p>Ναι. Τοποθετούμε ηλιακούς θερμοσίφωνες τόσο σε ταράτσες όσο και σε κεραμοσκεπές, με την κατάλληλη βάση στήριξης.</p>"),
+        ("Υπάρχει επιδότηση για ηλιακό θερμοσίφωνα;",
+         "<p>Το προηγούμενο πρόγραμμα «Αλλάζω σύστημα θέρμανσης και θερμοσίφωνα» επιδότησε 50% ή 60% της αξίας ηλιακού θερμοσίφωνα, "
+         "ανάλογα με το εισόδημα· η περίοδος αιτήσεών του έχει κλείσει. Έχει ανακοινωθεί νέος κύκλος, χωρίς ακόμη ημερομηνίες και κριτήρια. "
+         "Δείτε τι ξέρουμε στη σελίδα <a href=\"/epidotisi-iliakou-thermosifona/\">επιδότηση ηλιακού θερμοσίφωνα</a>.</p>"),
         ("Κάνετε εγκατάσταση;",
          "<p>Ναι. Το συνεργείο μας εγκαθιστά ηλιακούς θερμοσίφωνες, καθώς και συστήματα θέρμανσης και ψύξης για σπίτια και "
          "επαγγελματικούς χώρους. Για να ισχύει η εγγύηση, η εγκατάσταση γίνεται από το συνεργείο μας ή από εξειδικευμένο "
@@ -591,7 +598,7 @@ def build_home():
 {cta_band()}
 '''
     page("/", "Ηλιακοί Θερμοσίφωνες Πάτρα | Κατασκευαστής από το 1985 | BAVARIA",
-         f"Ηλιακοί θερμοσίφωνες BAVARIA GLASS 130, 150 και 220 λίτρων, διπλής και τριπλής ενέργειας, από τον κατασκευαστή στην Πάτρα. Εγγύηση {c['warranty_system_years']} ετών, εγκατάσταση και service.",
+         f"Ηλιακοί θερμοσίφωνες 130, 150 και 220 λίτρων, διπλής και τριπλής ενέργειας, από τον κατασκευαστή στην Πάτρα. Τιμές, εγγύηση {c['warranty_system_years']} ετών, εγκατάσταση και service.",
          body, active="/", schema=faq_schema(faq_items()[:5]),
          images=[img_url("roof"), img_url("tiles"), img_url("install"), img_url("single")])
 
@@ -675,7 +682,8 @@ def build_model(p):
     schema = []
     if c["show_prices"]:
         schema.append({"@type": "Product", "name": f"BAVARIA {p['model']}", "brand": {"@type": "Brand", "name": "BAVARIA"},
-                       "sku": "BAVARIA" + p["model"].replace(" ", ""), "description": lead,
+                       "sku": "BAVARIA" + p["model"].replace(" ", ""), "mpn": p["model"], "category": "Ηλιακοί θερμοσίφωνες", "description": lead,
+                       "manufacturer": {"@id": url("/#organization")},
                        "image": url(img_url("single", 800)), "url": url(p["url"]),
                        "offers": {"@type": "Offer", "price": str(p["msrp"]), "priceCurrency": "EUR",
                                   "availability": "https://schema.org/InStock", "seller": {"@id": url("/#organization")}}})
@@ -719,8 +727,10 @@ def build_model(p):
 </section>
 {cta_band(f"Θέλετε τον {p['model']};", "Πείτε μας πού θα τοποθετηθεί και σας στέλνουμε προσφορά με εγκατάσταση.")}
 '''
-    title = f"BAVARIA {p['model']} — Ηλιακός Θερμοσίφωνας {p['cap']}L {ENERGY_NAME[p['energy']]}"
-    desc = f"{lead} Δοχείο GLASS κλάσης {t['cls']}, εγγύηση {c['warranty_system_years']} ετών. Κατασκευή στην Πάτρα."
+    title = f"Ηλιακός Θερμοσίφωνας {p['cap']}L {ENERGY_NAME[p['energy']].split()[0]} Ενέργειας {p['model']} | BAVARIA"
+    price_txt = f" Τιμή {eur(p['msrp'])} με ΦΠΑ." if c["show_prices"] else ""
+    desc = (f"BAVARIA {p['model']}: {p['cap']} λίτρα, {ENERGY_NAME[p['energy']].lower()}, συλλέκτης {num(p['area'])} m², "
+            f"για {PEOPLE[p['cap']]}.{price_txt} Εγγύηση {c['warranty_system_years']} ετών, Πάτρα.")
     page(p["url"], title, desc, body, crumbs=[("/proionta/", "Προϊόντα"), (p["url"], p["model"])],
          active="/proionta/", schema=schema, images=[img_url("roof"), f"/assets/img/{lbl}.png"])
 
@@ -971,7 +981,7 @@ def build_contact():
 </section>
 '''
     page("/epikoinonia/", "Επικοινωνία — Ηλιακοί Θερμοσίφωνες BAVARIA Πάτρα",
-         f"Επικοινωνήστε με τη BAVARIA: τηλ. {c['phone']}, κινητό {c['mobile']}. Παντανάσσης 79, Ν.Ε.Ο. Πατρών–Αθηνών 86 και εργοστάσιο στο Βελβίτσι Πάτρας.",
+         f"BAVARIA Πάτρα: τηλ. {c['phone']}, {c['mobile']}. Καταστήματα Παντανάσσης 79 και Ν.Ε.Ο. Πατρών–Αθηνών 86, εργοστάσιο Βελβίτσι. Ωράριο και χάρτες.",
          body, crumbs=[("/epikoinonia/", "Επικοινωνία")], active="/epikoinonia/")
 
 
@@ -1057,6 +1067,57 @@ def build_legal():
                "Όροι χρήσης του ιστοτόπου της BAVARIA Ηλιακοί Θερμοσίφωνες.", terms, "Όροι χρήσης")
 
 
+def build_subsidy():
+    c = CONFIG
+    checked = "18 Νοεμβρίου 2026"
+    cheapest = min(PRODUCTS, key=lambda p: p["msrp"])
+    body = f'''
+<section class="page-head center">
+  <div class="wrap">
+    {eyebrow("Επιδότηση", True)}
+    <h1 class="display">Επιδότηση ηλιακού θερμοσίφωνα.</h1>
+    <p class="lead">Τι ισχύει για το «Αλλάζω σύστημα θέρμανσης και θερμοσίφωνα» και τι έχει ανακοινωθεί για τον νέο κύκλο.</p>
+    <p class="updated">Τελευταίος έλεγχος: {checked}</p>
+  </div>
+</section>
+<section class="section section--flush">
+  <div class="wrap">
+    <div class="prose prose--center">
+      <h2>Με μια ματιά</h2>
+      <table>
+        <tbody>
+          <tr><th scope="row">Προηγούμενο πρόγραμμα</th><td>«Αλλάζω σύστημα θέρμανσης και θερμοσίφωνα» — η περίοδος αιτήσεων έχει κλείσει</td></tr>
+          <tr><th scope="row">Επιδότηση ηλιακού</th><td>50% ή 60% ανάλογα με το εισόδημα (προηγούμενος κύκλος)</td></tr>
+          <tr><th scope="row">Νέος κύκλος</th><td>Έχει ανακοινωθεί για το 2027· κριτήρια και ημερομηνίες δεν έχουν δημοσιευθεί</td></tr>
+          <tr><th scope="row">Αιτήσεις</th><td>Στον προηγούμενο κύκλο μέσω της πλατφόρμας του προγράμματος με κωδικούς Taxisnet</td></tr>
+        </tbody>
+      </table>
+      <h2>Τι ίσχυσε στον προηγούμενο κύκλο</h2>
+      <ul>
+        <li>Για νοικοκυριά που αντικαθιστούν τον ηλεκτρικό θερμοσίφωνα με ηλιακό ή αντλία θερμότητας, σε κύρια ή δευτερεύουσα κατοικία, ιδιόκτητη, ενοικιαζόμενη ή παραχωρημένη.</li>
+        <li>Ο ηλιακός θερμοσίφωνας επιδοτήθηκε με 50% ή 60%, ανάλογα με το εισόδημα.</li>
+        <li>Οι αιτήσεις κατατάχθηκαν με κριτήρια όπως ΑμεΑ στην οικογένεια, αριθμός εξαρτώμενων τέκνων και βαθμοημέρες θέρμανσης της περιοχής.</li>
+      </ul>
+      <h2>Τι έχει ανακοινωθεί για τον νέο κύκλο</h2>
+      <p>Έχει ανακοινωθεί νέος κύκλος επιδοτήσεων για ηλιακούς θερμοσίφωνες και αντλίες θερμότητας, με χρηματοδότηση από το Κοινωνικό Ταμείο για το Κλίμα και εθνικό πρόγραμμα που αναμένεται εντός του 2027. Τα τελικά κριτήρια, τα ποσοστά και οι ημερομηνίες <strong>δεν έχουν ακόμη δημοσιευθεί</strong>. Μόλις ανοίξει, θα ενημερώσουμε αυτή τη σελίδα.</p>
+      <h2>Πώς βοηθάμε</h2>
+      <ul>
+        <li>Οι ηλιακοί θερμοσίφωνες BAVARIA έχουν Δήλωση Συμμόρφωσης CE, ενεργειακή σήμανση κατά τον Κανονισμό (ΕΕ) 812/2013{" και συλλέκτες πιστοποιημένους Solar Keymark" if KEYMARK else ""} — τα έγγραφα που συνήθως ζητούν τα προγράμματα.</li>
+        <li>Σας δίνουμε τα τεχνικά έγγραφα και το παραστατικό που χρειάζεστε για την αίτηση.</li>
+        <li>Τιμές από {eur(cheapest["msrp"])} με ΦΠΑ — δείτε <a href="/proionta/">όλα τα μοντέλα</a>.</li>
+      </ul>
+      <p class="note">Η σελίδα είναι ενημερωτική και δεν αποτελεί επίσημη ανακοίνωση. Την επίσημη πληροφόρηση θα βρείτε στην <a href="https://stegasi.gov.gr/programs/allazo-systima-thermansis-kai-thermosifona/" target="_blank" rel="noopener">Πύλη Στεγαστικής Πολιτικής</a>.</p>
+      <div class="actions mt-24"><a class="btn btn--primary" href="{tel(c["phone"])}">Ρωτήστε μας · {E(c["phone"])}</a><a class="link-more" href="/odigos-epilogis/">Ποιο μοντέλο μου ταιριάζει</a></div>
+    </div>
+  </div>
+</section>
+{cta_band()}
+'''
+    page("/epidotisi-iliakou-thermosifona/", "Επιδότηση Ηλιακού Θερμοσίφωνα 2026–2027: Αλλάζω Θερμοσίφωνα | BAVARIA",
+         "Επιδότηση ηλιακού θερμοσίφωνα: τι ίσχυσε στο «Αλλάζω σύστημα θέρμανσης και θερμοσίφωνα» (50%–60%) και τι ξέρουμε για τον νέο κύκλο του 2027.",
+         body, crumbs=[("/epidotisi-iliakou-thermosifona/", "Επιδότηση")])
+
+
 def build_404():
     body = '''
 <section class="page-head center page-head--tall">
@@ -1099,7 +1160,7 @@ if __name__ == "__main__":
     build_home(); build_products()
     for p in PRODUCTS:
         build_model(p)
-    build_guide(); build_warranty(); build_about(); build_faq(); build_contact(); build_legal(); build_404()
+    build_guide(); build_warranty(); build_subsidy(); build_about(); build_faq(); build_contact(); build_legal(); build_404()
     build_meta_files()
     print(f"Built {len(PAGES)} indexable pages into {OUT}")
     if not KEYMARK:

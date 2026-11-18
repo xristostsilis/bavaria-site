@@ -5,7 +5,7 @@
 ## Δομή
 - `public/` — το έτοιμο site (αυτό σερβίρει το DigitalOcean)
 - `tools/build.py` — φτιάχνει όλες τις σελίδες από τα στοιχεία στην αρχή του αρχείου
-- `.do/app.yaml` — ρυθμίσεις DigitalOcean (static site, domain, www → bavaria.com.gr, 301 από παλιά URLs)
+- `.do/app.yaml` — ρυθμίσεις DigitalOcean (static site, domain, www → bavaria.com.gr, 301 από τα παλιά URLs `/main/...`, `/index.html`, `/img/`)
 
 ## Αλλαγή στοιχείων
 1. Ανοίξτε `tools/build.py` → `CONFIG` / `PRODUCTS`.
@@ -22,4 +22,5 @@
 
 ## Μετά το ανέβασμα
 - Google Search Console → υποβολή `https://bavaria.com.gr/sitemap.xml`.
-- Google Business Profile για έδρα, υποκατάστημα, εργοστάσιο, με ίδια στοιχεία με το site και τις νέες φωτογραφίες.
+- Google Business Profile για τα 2 καταστήματα, με ίδια στοιχεία με το site και τις νέες φωτογραφίες.
+- Οι παλιές διευθύνσεις `/main/...` του παλιού site κάνουν 301 στις νέες σελίδες (`.do/app.yaml`).
