@@ -245,6 +245,7 @@ def footer():
           <li><a href="/eggyisi/">Εγγύηση {c["warranty_system_years"]} ετών</a></li>
           <li><a href="/eggyisi/#service">Service</a></li>
           <li><a href="/epidotisi-iliakou-thermosifona/">Επιδότηση ηλιακού</a></li>
+          <li><a href="/paradosi-epistrofes/">Παράδοση &amp; επιστροφές</a></li>
           <li><a href="/syxnes-erotiseis/">Συχνές ερωτήσεις</a></li>
           <li><a href="/etaireia/">Η εταιρεία</a></li>
         </ul>
@@ -274,12 +275,22 @@ def footer():
 </footer>'''
 
 
+def return_policy():
+    return {"@type": "MerchantReturnPolicy", "@id": url("/paradosi-epistrofes/#epistrofes"),
+            "applicableCountry": "GR",
+            "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+            "merchantReturnDays": 14,
+            "returnMethod": "https://schema.org/ReturnByMail",
+            "returnFees": "https://schema.org/ReturnFeesCustomerResponsibility",
+            "merchantReturnLink": url("/paradosi-epistrofes/")}
+
+
 def org_schema():
     c = CONFIG
     org = {"@type": "Organization", "@id": url("/#organization"), "name": c["brand"], "legalName": c["legal_name"],
            "url": url("/"), "logo": url("/assets/img/bavaria-logo-480.png"), "foundingDate": str(c["founded"]),
            "email": c["email"], "telephone": c["phone"].replace(" ", ""), "vatID": "EL" + c["afm"],
-           "taxID": c["afm"], "areaServed": "GR",
+           "taxID": c["afm"], "areaServed": "GR", "hasMerchantReturnPolicy": return_policy(),
            "description": "Κατασκευαστής ηλιακών θερμοσιφώνων στην Πάτρα από το 1985.",
            "address": {"@type": "PostalAddress", "streetAddress": "Παντανάσσης 79", "addressLocality": "Πάτρα",
                        "postalCode": "26221", "addressRegion": "Αχαΐα", "addressCountry": "GR"}}
@@ -452,6 +463,14 @@ def faq_items():
          "<p>Το προηγούμενο πρόγραμμα «Αλλάζω σύστημα θέρμανσης και θερμοσίφωνα» επιδότησε 50% ή 60% της αξίας ηλιακού θερμοσίφωνα, "
          "ανάλογα με το εισόδημα· η περίοδος αιτήσεών του έχει κλείσει. Έχει ανακοινωθεί νέος κύκλος, χωρίς ακόμη ημερομηνίες και κριτήρια. "
          "Δείτε τι ξέρουμε στη σελίδα <a href=\"/epidotisi-iliakou-thermosifona/\">επιδότηση ηλιακού θερμοσίφωνα</a>.</p>"),
+        ("Πόσο κοστίζει η μεταφορά;",
+         "<p>Οι τιμές δεν περιλαμβάνουν μεταφορά και εγκατάσταση. Σε Πάτρα, Αχαΐα, Ηλεία και Αιτωλοακαρνανία, αν το τοποθετήσει το συνεργείο μας, "
+         "η μεταφορά περιλαμβάνεται στο κόστος εγκατάστασης. Στην υπόλοιπη Ελλάδα στέλνουμε με μεταφορική, με χρέωση που σας λέμε στην προσφορά. "
+         "Δείτε <a href=\"/paradosi-epistrofes/\">Παράδοση &amp; επιστροφές</a>.</p>"),
+        ("Μπορώ να επιστρέψω τον ηλιακό;",
+         "<p>Για αγορές από απόσταση (τηλέφωνο, email) έχετε δικαίωμα υπαναχώρησης 14 ημερών από την παραλαβή, χωρίς να δώσετε αιτιολογία. "
+         "Για αγορές από το κατάστημα δεχόμαστε επιστροφή εντός 14 ημερών, εφόσον το προϊόν δεν έχει τοποθετηθεί ή χρησιμοποιηθεί και είναι στην αρχική του συσκευασία. "
+         "Όλες οι λεπτομέρειες στη σελίδα <a href=\"/paradosi-epistrofes/\">Παράδοση &amp; επιστροφές</a>.</p>"),
         ("Κάνετε εγκατάσταση;",
          "<p>Ναι. Το συνεργείο μας εγκαθιστά ηλιακούς θερμοσίφωνες, καθώς και συστήματα θέρμανσης και ψύξης για σπίτια και "
          "επαγγελματικούς χώρους. Για να ισχύει η εγγύηση, η εγκατάσταση γίνεται από το συνεργείο μας ή από εξειδικευμένο "
@@ -479,6 +498,19 @@ def cta_band(title="Μιλήστε με τον κατασκευαστή.", text=
       <a class="btn btn--primary" href="{tel(c["phone"])}">Κλήση {E(c["phone"])}</a>
       <a class="btn btn--ghost" href="/epikoinonia/#forma">Ζητήστε προσφορά</a>
     </div>
+  </div>
+</section>'''
+
+
+def reviews_band():
+    shops = [l for l in LOCATIONS if l["store"]]
+    btns = "".join(f'<a class="btn btn--ghost" href="{E(l["maps"])}" target="_blank" rel="noopener">{E(l["street"])}</a>' for l in shops)
+    return f'''<section class="section" aria-labelledby="rev-title">
+  <div class="wrap center">
+    {eyebrow("Κριτικές", True)}
+    <h2 class="headline" id="rev-title">Τι λένε οι πελάτες μας.</h2>
+    <p class="lead narrow lead--gap">Διαβάστε τις κριτικές πελατών μας στο Google για κάθε κατάστημα — ή αφήστε τη δική σας μετά την εγκατάσταση.</p>
+    <div class="actions actions--center">{btns}</div>
   </div>
 </section>'''
 
@@ -595,6 +627,8 @@ def build_home():
   </div></div>
 </section>
 
+{reviews_band()}
+
 {cta_band()}
 '''
     page("/", "Ηλιακοί Θερμοσίφωνες Πάτρα | Κατασκευαστής από το 1985 | BAVARIA",
@@ -686,7 +720,9 @@ def build_model(p):
                        "manufacturer": {"@id": url("/#organization")},
                        "image": url(img_url("single", 800)), "url": url(p["url"]),
                        "offers": {"@type": "Offer", "price": str(p["msrp"]), "priceCurrency": "EUR",
-                                  "availability": "https://schema.org/InStock", "seller": {"@id": url("/#organization")}}})
+                                  "itemCondition": "https://schema.org/NewCondition",
+                                  "availability": "https://schema.org/InStock", "seller": {"@id": url("/#organization")},
+                                  "hasMerchantReturnPolicy": return_policy()}})
     body = f'''
 <section class="mhead">
   <div class="wrap">
@@ -1054,7 +1090,9 @@ def build_legal():
 <h2>3. Πληροφορίες προϊόντων</h2>
 <p>Τα τεχνικά στοιχεία προέρχονται από την τεχνική τεκμηρίωση, τις Δηλώσεις Συμμόρφωσης και τις ενεργειακές ετικέτες των προϊόντων μας και μπορεί να αλλάξουν λόγω εξέλιξης. Οι φωτογραφίες είναι πραγματικές εγκαταστάσεις BAVARIA και απεικονίζουν ενδεικτικά τη σειρά. Ο οδηγός επιλογής δίνει γενική πρόταση και δεν αντικαθιστά τη συμβουλή τεχνικού.</p>
 {prices}
-<h2>4. Εγγύηση</h2>
+<h2>4. Παράδοση, εγκατάσταση και επιστροφές</h2>
+<p>Ισχύουν όσα αναφέρονται στη σελίδα <a href="/paradosi-epistrofes/">Παράδοση, εγκατάσταση &amp; επιστροφές</a>, μαζί με το δικαίωμα υπαναχώρησης για αγορές από απόσταση.</p>
+<h2>4α. Εγγύηση</h2>
 <p>Ισχύουν οι <a href="/eggyisi/">όροι εγγύησης</a> του εντύπου που συνοδεύει κάθε σύστημα, επιπλέον των δικαιωμάτων σας από τη νόμιμη εγγύηση (ν. 2251/1994, ν. 4967/2022).</p>
 <h2>5. Πνευματική ιδιοκτησία</h2>
 <p>Το σήμα BAVARIA®, το λογότυπο, τα κείμενα, οι φωτογραφίες και ο σχεδιασμός του ιστοτόπου προστατεύονται από τη νομοθεσία. Δεν επιτρέπεται η αναπαραγωγή τους χωρίς γραπτή άδεια.</p>
@@ -1065,6 +1103,67 @@ def build_legal():
 '''
     legal_page("/oroi-xrisis/", "Όροι Χρήσης | BAVARIA", "Όροι χρήσης",
                "Όροι χρήσης του ιστοτόπου της BAVARIA Ηλιακοί Θερμοσίφωνες.", terms, "Όροι χρήσης")
+
+
+def build_delivery():
+    c = CONFIG
+    body = f'''
+<section class="page-head center">
+  <div class="wrap">
+    {eyebrow("Παράδοση & επιστροφές", True)}
+    <h1 class="display">Παράδοση, εγκατάσταση &amp; επιστροφές.</h1>
+    <p class="lead">Πώς φτάνει ο ηλιακός σας, ποιος τον τοποθετεί και τι ισχύει αν αλλάξετε γνώμη.</p>
+    <p class="updated">Τελευταία ενημέρωση: 19 Νοεμβρίου 2026</p>
+  </div>
+</section>
+<section class="section section--flush">
+  <div class="wrap">
+    <div class="prose prose--center">
+      <h2 id="paradosi">Μεταφορά και εγκατάσταση</h2>
+      <p>Οι <a href="/proionta/">τιμές</a> αφορούν το ηλιακό σύστημα και <strong>δεν περιλαμβάνουν μεταφορά και εγκατάσταση</strong>. Το ακριβές κόστος σας το δίνουμε γραπτά στην προσφορά, πριν δεσμευτείτε.</p>
+      <table>
+        <thead><tr><th>Περιοχή</th><th>Τι κάνουμε</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Πάτρα, Αχαΐα (Αίγιο κ.λπ.), Ηλεία, Αιτωλοακαρνανία</th><td>Μεταφορά και εγκατάσταση από το δικό μας συνεργείο. Αν αναθέσετε σε εμάς την εγκατάσταση, η μεταφορά περιλαμβάνεται στο κόστος εγκατάστασης. Χωρίς εγκατάσταση, η μεταφορά χρεώνεται χωριστά.</td></tr>
+          <tr><th scope="row">Υπόλοιπη Ελλάδα</th><td>Αποστολή μέσω μεταφορικής εταιρείας, με χρέωση που αναγράφεται στην προσφορά. Την εγκατάσταση την κάνει εξειδικευμένος τεχνικός της επιλογής σας, σύμφωνα με τις οδηγίες μας.</td></tr>
+        </tbody>
+      </table>
+      <p class="note">Για να ισχύει η <a href="/eggyisi/">εγγύηση</a>, η εγκατάσταση γίνεται από το συνεργείο μας ή από εξειδικευμένο τεχνικό σύμφωνα με τις οδηγίες μας.</p>
+
+      <h2 id="epistrofes">Επιστροφές</h2>
+      <h3>Αγορές από απόσταση ή εκτός καταστήματος — δικαίωμα υπαναχώρησης 14 ημερών</h3>
+      <p>Αν η σύμβαση έγινε από απόσταση (τηλέφωνο, email) ή εκτός του καταστήματός μας, έχετε δικαίωμα να υπαναχωρήσετε <strong>εντός 14 ημερών, χωρίς να δώσετε αιτιολογία</strong> (ν. 2251/1994, άρθρα 3ε–3ιβ). Η προθεσμία ξεκινά από την ημέρα που παραλαμβάνετε το προϊόν.</p>
+      <ul>
+        <li><strong>Πώς:</strong> μας ενημερώνετε με σαφή δήλωση — email στο <a href="mailto:{E(c["email"])}">{E(c["email"])}</a>, τηλέφωνο ή επιστολή. Μπορείτε να χρησιμοποιήσετε το υπόδειγμα παρακάτω, χωρίς να είναι υποχρεωτικό.</li>
+        <li><strong>Επιστροφή προϊόντος:</strong> το επιστρέφετε εντός 14 ημερών από τη δήλωσή σας. Το άμεσο κόστος επιστροφής το επιβαρύνεστε εσείς.</li>
+        <li><strong>Επιστροφή χρημάτων:</strong> σας επιστρέφουμε όλα τα ποσά που πληρώσατε, μαζί με τα αρχικά έξοδα αποστολής (έως το κόστος της φθηνότερης τυπικής αποστολής), εντός 14 ημερών από τη δήλωσή σας, με τον ίδιο τρόπο πληρωμής. Μπορούμε να περιμένουμε μέχρι να παραλάβουμε το προϊόν.</li>
+        <li><strong>Κατάσταση προϊόντος:</strong> μπορείτε να ανοίξετε τη συσκευασία για να ελέγξετε το προϊόν. Ευθύνεστε μόνο για μείωση της αξίας του από χειρισμό πέρα από όσο χρειάζεται για αυτόν τον έλεγχο — για παράδειγμα αν τοποθετήθηκε, συνδέθηκε ή χρησιμοποιήθηκε.</li>
+        <li><strong>Εγκατάσταση:</strong> αν ζητήσατε ρητά να γίνει η εγκατάσταση μέσα στις 14 ημέρες και υπαναχωρήσετε, πληρώνετε την αξία της εργασίας που έγινε μέχρι τότε. Αν η εγκατάσταση ολοκληρώθηκε με τη ρητή συγκατάθεσή σας, το δικαίωμα υπαναχώρησης για την εργασία δεν ισχύει πλέον.</li>
+      </ul>
+      <h3>Αγορές από το κατάστημα</h3>
+      <p>Για αγορές μέσα στο κατάστημα ο νόμος δεν προβλέπει δικαίωμα υπαναχώρησης. Εμείς, ως εμπορική πολιτική, δεχόμαστε επιστροφή <strong>εντός 14 ημερών από την αγορά</strong>, με την απόδειξη, εφόσον το προϊόν είναι στην αρχική του συσκευασία και δεν έχει τοποθετηθεί, συνδεθεί ή χρησιμοποιηθεί.</p>
+      <p class="note">Τα παραπάνω ισχύουν επιπλέον της νόμιμης εγγύησης για ελαττωματικά προϊόντα (ν. 2251/1994 και ν. 4967/2022) και της <a href="/eggyisi/">εμπορικής εγγύησης {c["warranty_system_years"]} ετών</a>.</p>
+
+      <h3 id="entypo">Υπόδειγμα δήλωσης υπαναχώρησης</h3>
+      <p class="note">Συμπληρώστε και στείλτε το μόνο αν θέλετε να υπαναχωρήσετε από τη σύμβαση.</p>
+      <div class="form-letter">
+        <p>Προς: {E(c["legal_name"])} (BAVARIA), Παντανάσσης 79, 26221 Πάτρα — {E(c["email"])}</p>
+        <p>Με την παρούσα δηλώνω ότι υπαναχωρώ από τη σύμβαση πώλησης του παρακάτω προϊόντος:</p>
+        <p>Προϊόν: ……………………………………</p>
+        <p>Παραγγέλθηκε στις: ……………… / Παραλήφθηκε στις: ………………</p>
+        <p>Ονοματεπώνυμο: ……………………………………</p>
+        <p>Διεύθυνση: ……………………………………</p>
+        <p>Υπογραφή (μόνο αν σταλεί σε χαρτί): ……………………</p>
+        <p>Ημερομηνία: ………………</p>
+      </div>
+      <div class="actions mt-24"><a class="btn btn--primary" href="{tel(c["phone"])}">Ερωτήσεις · {E(c["phone"])}</a><a class="link-more" href="/epikoinonia/#forma">Ζητήστε προσφορά</a></div>
+    </div>
+  </div>
+</section>
+'''
+    page("/paradosi-epistrofes/", "Παράδοση, Εγκατάσταση & Επιστροφές Ηλιακού Θερμοσίφωνα | BAVARIA",
+         "Μεταφορά και εγκατάσταση σε Πάτρα, Αχαΐα, Ηλεία, Αιτωλοακαρνανία· αποστολή σε όλη την Ελλάδα. Δικαίωμα υπαναχώρησης 14 ημερών και πολιτική επιστροφών.",
+         body, crumbs=[("/paradosi-epistrofes/", "Παράδοση & επιστροφές")])
 
 
 def build_subsidy():
@@ -1160,7 +1259,7 @@ if __name__ == "__main__":
     build_home(); build_products()
     for p in PRODUCTS:
         build_model(p)
-    build_guide(); build_warranty(); build_subsidy(); build_about(); build_faq(); build_contact(); build_legal(); build_404()
+    build_guide(); build_warranty(); build_delivery(); build_subsidy(); build_about(); build_faq(); build_contact(); build_legal(); build_404()
     build_meta_files()
     print(f"Built {len(PAGES)} indexable pages into {OUT}")
     if not KEYMARK:
