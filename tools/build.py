@@ -682,7 +682,7 @@ def build_model(p):
     schema = []
     if c["show_prices"]:
         schema.append({"@type": "Product", "name": f"BAVARIA {p['model']}", "brand": {"@type": "Brand", "name": "BAVARIA"},
-                       "sku": "BAVARIA" + p["model"].replace(" ", ""), "mpn": p["model"], "category": "Ηλιακοί θερμοσίφωνες", "description": lead,
+                       "sku": "BAVARIA" + p["model"].replace(" ", ""), "mpn": p["model"], "description": lead,
                        "manufacturer": {"@id": url("/#organization")},
                        "image": url(img_url("single", 800)), "url": url(p["url"]),
                        "offers": {"@type": "Offer", "price": str(p["msrp"]), "priceCurrency": "EUR",
